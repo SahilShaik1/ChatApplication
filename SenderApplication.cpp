@@ -9,10 +9,11 @@
 //prevent choosing a port already in use
 
 
+
 int main() {
     unsigned short port = 55555;
     //127.0.0.1 for Loopback
-    std::string IPaddr = "0.0.0.0";
+    std::string IPaddr = 0.0.0.0";
     WSADATA wsaData, *dataref;
     int wsaerr;
     WORD wVerReq = MAKEWORD(2,2);
@@ -41,26 +42,30 @@ int main() {
                     if(clientSocket != INVALID_SOCKET){
                         sockaddr_in client;
                         int size = sizeof(client);
-                        char clientName[50];
-                        char hostName[50];
-                        getnameinfo((SOCKADDR*)& clientSocket, sizeof(clientSocket), clientName, sizeof(clientName), NULL, NULL, 0);
-                        gethostname(hostName, sizeof(hostName));
                         std::cout << "Connected with Client" << "\n";
-                        std::cout << "Now Talking to "  << clientName << "\n";
                         std::string ServerMessage;
                         char buffer[500];
+                        char recieved[500];
+                        int index = 0;
                         do{
-                        if(send(clientSocket, buffer, sizeof(buffer), 0) == sizeof(buffer)){
-                            std::cout << hostName << " said: " << buffer << "\n";
-                        } else {
-                            if(WSAGetLastError() == 10054){
-                                std::cout << clientName << " ended the chat." << "\n";
-                                break;
+                            if(index % 2 == 0){
+                                std::cin.getline(buffer, 500);
+                                //Even Turns
+                                if(send(clientSocket, buffer, sizeof(buffer), 0) == sizeof(buffer)){
+                                    std::cout << "Server said: " << buffer << "\n";
+                                    index++;
+                                }
+                                
+                            } else{
+                                if(recv(clientSocket, recieved, sizeof(recieved), 0) != SOCKET_ERROR){
+                                    std::cout << "Client said: " << recieved << "\n";
+                                    index++;
+                                }   
                             }
-                            std::cout << "Failed to send Message" << "\n";
-                            std::cout << "Error: " << WSAGetLastError();
-                        }
-                        std::cin.getline(buffer, 500);
+                            if(WSAGetLastError() == 10054){
+                                std::cout << "Client ended the chat." << "\n";
+                                break;
+                            }                         
                         } while (buffer != "exit");
                     } else{
                         std::cout << "Failed to Connect with Client" << "\n";
