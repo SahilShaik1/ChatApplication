@@ -1,8 +1,14 @@
 #include <iostream>
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <windows.h>
-#include <thread>
+#include <fstream>
+
+
+
+//The Client Application
+//change port and ip to your needs.
+
+
 
 
 
@@ -30,13 +36,41 @@ int main() {
                 std::cout << "Successfully Connected with Server" << "\n";
                 char msgRec[500];
                 char msgSend[500];
+                char fileStr[500];
                 int index = 0;
                 do{ 
                     if(index % 2 == 0){
                         //Even Turns
                         if(recv(ServerSocket, msgRec, sizeof(msgRec), 0) != SOCKET_ERROR){
-                            std::cout << "Server said: " << msgRec << "\n";
-                            index++;
+                            if(msgRec[0] == '/' && msgRec[1] == '0'){
+                                std::string name = "";
+                                while(msgRec[0] != '<'){
+                                    recv(ServerSocket, msgRec, sizeof(msgRec), 0);
+                                    if(msgRec[0] != '<'){
+                                        name += msgRec;
+                                    }
+                                }
+                                std::cout << "Name Recieved" << name;
+                                std::ofstream fileRecieved(name);
+                                recv(ServerSocket, msgRec, sizeof(msgRec), 0);
+                                fileRecieved << msgRec;
+                                while(msgRec[0] != '|'){
+                                    recv(ServerSocket, msgRec, sizeof(msgRec), 0);
+                                    if(msgRec[0] == '|'){
+                                        break;
+                                    }
+                                    if(msgRec[0] == '['){
+                                        fileRecieved << "\n";
+                                    } else{
+                                        fileRecieved << msgRec;
+                                    }
+                                }
+                                fileRecieved.close();
+                            }
+                            else{
+                                std::cout << "Server said: " << msgRec << "\n";
+                                index++;
+                            }
                         }
                     } else{
                         //Odd Turns
