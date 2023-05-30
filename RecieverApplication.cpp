@@ -5,6 +5,10 @@
 
 
 
+//Use following command to operate
+//cd "c:\Users\sahil\Documents\C++\C++\NetworkProgramming\" ; if ($?) { g++ ServerSocketApplication.cpp -o ServerSocketApplication -lws2_32 } ; if ($?) { .\ServerSocketApplication }
+
+
 //The Client Application
 //change port and ip to your needs.
 
@@ -17,7 +21,7 @@ int main() {
     int wsaerr;
     WORD wVerReq = MAKEWORD(2,2);
     wsaerr = WSAStartup(wVerReq, dataref);
-    std::string serverIP = "0.0.0.0";
+    std::string serverIP = "127.0.0.1";
 
     if(wsaerr == 0){
         //Successful Startup
