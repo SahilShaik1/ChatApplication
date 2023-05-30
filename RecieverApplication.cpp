@@ -5,8 +5,6 @@
 
 
 
-//Use following command to operate
-//cd "c:\Users\sahil\Documents\C++\C++\NetworkProgramming\" ; if ($?) { g++ ServerSocketApplication.cpp -o ServerSocketApplication -lws2_32 } ; if ($?) { .\ServerSocketApplication }
 
 
 //The Client Application
@@ -21,7 +19,7 @@ int main() {
     int wsaerr;
     WORD wVerReq = MAKEWORD(2,2);
     wsaerr = WSAStartup(wVerReq, dataref);
-    std::string serverIP = "127.0.0.1";
+    std::string serverIP = "0.0.0.0";
 
     if(wsaerr == 0){
         //Successful Startup
@@ -47,14 +45,16 @@ int main() {
                         //Even Turns
                         if(recv(ServerSocket, msgRec, sizeof(msgRec), 0) != SOCKET_ERROR){
                             if(msgRec[0] == '/' && msgRec[1] == '0'){
+                                std::cout << "Server is about to send a file" << "\n";
                                 std::string name = "";
                                 while(msgRec[0] != '<'){
                                     recv(ServerSocket, msgRec, sizeof(msgRec), 0);
                                     if(msgRec[0] != '<'){
                                         name += msgRec;
+                                    } else {
+                                        break;
                                     }
                                 }
-                                std::cout << "Name Recieved" << name;
                                 std::ofstream fileRecieved(name);
                                 recv(ServerSocket, msgRec, sizeof(msgRec), 0);
                                 fileRecieved << msgRec;
