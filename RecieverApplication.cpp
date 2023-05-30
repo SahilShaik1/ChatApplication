@@ -3,12 +3,6 @@
 #include <ws2tcpip.h>
 #include <fstream>
 
-
-
-//Use following command to operate
-//cd "c:\Users\sahil\Documents\C++\C++\NetworkProgramming\" ; if ($?) { g++ ServerSocketApplication.cpp -o ServerSocketApplication -lws2_32 } ; if ($?) { .\ServerSocketApplication }
-
-
 //The Client Application
 //change port and ip to your needs.
 
@@ -47,25 +41,23 @@ int main() {
                         //Even Turns
                         if(recv(ServerSocket, msgRec, sizeof(msgRec), 0) != SOCKET_ERROR){
                             if(msgRec[0] == '/' && msgRec[1] == '0'){
-                                std::cout << "Server is about to send a file" << "\n";
                                 std::string name = "";
                                 while(msgRec[0] != '<'){
                                     recv(ServerSocket, msgRec, sizeof(msgRec), 0);
                                     if(msgRec[0] != '<'){
                                         name += msgRec;
-                                    } else {
-                                        break;
                                     }
                                 }
+                                std::cout << "Name Recieved: " << name << "\n";
                                 std::ofstream fileRecieved(name);
                                 recv(ServerSocket, msgRec, sizeof(msgRec), 0);
                                 fileRecieved << msgRec;
-                                while(msgRec[0] != '|'){
+                                while(msgRec[0] != '%'){
                                     recv(ServerSocket, msgRec, sizeof(msgRec), 0);
-                                    if(msgRec[0] == '|'){
+                                    if(msgRec[0] == '%'){
                                         break;
                                     }
-                                    if(msgRec[0] == '['){
+                                    if(msgRec[0] == '@'){
                                         fileRecieved << "\n";
                                     } else{
                                         fileRecieved << msgRec;
