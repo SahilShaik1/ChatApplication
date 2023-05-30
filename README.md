@@ -8,4 +8,4 @@ Basic Chat Application between 2 machines (or 1 machine on the feedback loop IP)
 - -s x y
 - x is the name of the file you want to send
 - y is the file name and format you want it to be on the client device
-- May be corrupted or not work if an invalid file format is attempted to be used or the delay in the reciever is set too low.
+- May be corrupted or not work if an invalid file format is attempted to be used or the delay in the sender/server is set too low.
