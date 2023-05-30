@@ -4,7 +4,6 @@
 #include <fstream>
 #include <cstring>
 #include <vector>
-
 //The Server File
 
 //Replace the ip address with your server IP address
@@ -20,9 +19,9 @@ void split_string(std::string str, int chars, SOCKET* clientSocket){
             a += str[z];
         }
         std::cout << "Sent 5 characters." << "\n";
-        std::cout << "Split: " << a.data() << "\n";
         send(*clientSocket, a.data(), sizeof(a.data()), 0);
         a = "";
+        Sleep(1000);
     }
 }
 
@@ -70,7 +69,7 @@ int main() {
                             if(index % 2 == 0){
                                 std::cin.getline(buffer, 500);
                                 //Even Turns
-                                //-s Brotha.txt
+                                //-s Brotha.cpp f.cpp
                                 if(buffer[0] == '-' && buffer[1] == 's'){
                                     char* token = strtok(buffer, " ");
                                     token = strtok(NULL, " ");
@@ -82,7 +81,9 @@ int main() {
                                     std::string n = token;
                                     send(clientSocket, "/0 ", sizeof("/0 "), 0) == sizeof("/0 ");
                                     split_string(n, 5, &clientSocket);
-                                    send(clientSocket, endName, sizeof(endName), 0);
+                                    if(send(clientSocket, endName, sizeof(endName), 0) == sizeof(endName)){
+                                        std::cout << "Sent end Name key" << "\n";
+                                    }
                                     while(std::getline(FileSent, text)){
                                         std::cout << "Sent 1 line" << "\n";
                                         split_string(text, 5, &clientSocket);
