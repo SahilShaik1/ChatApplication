@@ -16,7 +16,7 @@ Basic Chat Application between 2 machines (or 1 machine on the feedback loop IP)
 - To send a file from the Server to the client use the following format
 - -s x y
 - x is the name of the file you want to send
-- y is the file name and format you want it to be on the client device
+- y is the file name and format you want it to be on the client device. Can only be variations of text files, such as .txt or .cpp. Images do not work correctly.
 - May be corrupted or not work if an invalid file format is attempted to be used, the delay between sending data in the sender/server file is set too low, or if a file that doesn't exist in scope is attempted to be read from.
 - **NOTE: File sharing requires lots of time, especially when the file is large in size. The file sharing can sometimes also break if the characters '@' or '%' is used as it signifies to start a new line and finish sharing the file respectively**
 - The code works by checking every 5 characters to send since the send function gets corrupted over large amounts of text, and if the first character of every 5 characters matches, the reciever file runs the command to start a new file or stop reading
