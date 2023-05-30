@@ -1,6 +1,9 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <iostream>
+#include <fstream>
+#include <cstring>
+#include <vector>
 
 //The Server File
 
@@ -9,11 +12,27 @@
 //prevent choosing a port already in use
 
 
+void split_string(std::string str, int chars, SOCKET* clientSocket){
+    int z = 0;
+    std::string a = "";
+    for(int i = 0; i < str.size(); i = i + 5){
+        for(int z = i; z < i + 5; z++){
+            a += str[z];
+        }
+        std::cout << "Sent 5 characters." << "\n";
+        std::cout << "Split: " << a.data() << "\n";
+        send(*clientSocket, a.data(), sizeof(a.data()), 0);
+        a = "";
+    }
+}
+
+
+
 
 int main() {
     unsigned short port = 55555;
     //127.0.0.1 for Loopback
-    std::string IPaddr = 0.0.0.0";
+    std::string IPaddr = "0.0.0.0";
     WSADATA wsaData, *dataref;
     int wsaerr;
     WORD wVerReq = MAKEWORD(2,2);
@@ -51,7 +70,35 @@ int main() {
                             if(index % 2 == 0){
                                 std::cin.getline(buffer, 500);
                                 //Even Turns
-                                if(send(clientSocket, buffer, sizeof(buffer), 0) == sizeof(buffer)){
+                                //-s Brotha.txt
+                                if(buffer[0] == '-' && buffer[1] == 's'){
+                                    char* token = strtok(buffer, " ");
+                                    token = strtok(NULL, " ");
+                                    std::ifstream FileSent(token);
+                                    std::string text;
+                                    token = strtok(NULL, " ");
+                                    char newLine[2] = "[";
+                                    char endName[2] = "<";
+                                    std::string n = token;
+                                    send(clientSocket, "/0 ", sizeof("/0 "), 0) == sizeof("/0 ");
+                                    split_string(n, 5, &clientSocket);
+                                    send(clientSocket, endName, sizeof(endName), 0);
+                                    while(std::getline(FileSent, text)){
+                                        std::cout << "Sent 1 line" << "\n";
+                                        split_string(text, 5, &clientSocket);
+                                        send(clientSocket, newLine, sizeof(newLine), 0);
+                                        Sleep(1000);    
+                                    }                                
+                                    char en[2] = "|";
+                                    if(send(clientSocket, en , sizeof(en), 0) == sizeof(en)){
+                                        std::cout << "Finished Sending" << "\n";
+                                    } else {
+                                        std::cout << "Failed to send" << "\n";
+                                        std::cout << "Error: " << WSAGetLastError();
+                                    }
+                                    FileSent.close();
+                                }
+                                else if(send(clientSocket, buffer, sizeof(buffer), 0) == sizeof(buffer)){
                                     std::cout << "Server said: " << buffer << "\n";
                                     index++;
                                 }
@@ -91,7 +138,8 @@ int main() {
         }
     } else{
         //On Failed WSA/DLL Startup
-        std::cout << "Error occurred in WSA Startup";
+        std::cout << "Error occurred in WSA Startup" << "\n";
+        std::cout << "Error: " <<WSAStartup(wVerReq, dataref);
         WSACleanup();
     }
     
