@@ -21,6 +21,7 @@ void split_string(std::string str, int chars, SOCKET* clientSocket){
         std::cout << "Sent 5 characters." << "\n";
         send(*clientSocket, a.data(), sizeof(a.data()), 0);
         a = "";
+        //If your file doesn't send correctly, try increasing the sleep value below
         Sleep(1000);
     }
 }
@@ -76,7 +77,7 @@ int main() {
                                     std::ifstream FileSent(token);
                                     std::string text;
                                     token = strtok(NULL, " ");
-                                    char newLine[2] = "[";
+                                    char newLine[2] = "@";
                                     char endName[2] = "<";
                                     std::string n = token;
                                     send(clientSocket, "/0 ", sizeof("/0 "), 0) == sizeof("/0 ");
@@ -90,7 +91,7 @@ int main() {
                                         send(clientSocket, newLine, sizeof(newLine), 0);
                                         Sleep(1000);    
                                     }                                
-                                    char en[2] = "|";
+                                    char en[2] = "%";
                                     if(send(clientSocket, en , sizeof(en), 0) == sizeof(en)){
                                         std::cout << "Finished Sending" << "\n";
                                     } else {
