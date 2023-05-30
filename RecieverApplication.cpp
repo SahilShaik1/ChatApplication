@@ -5,6 +5,8 @@
 
 
 
+//Use following command to operate
+//cd "c:\Users\sahil\Documents\C++\C++\NetworkProgramming\" ; if ($?) { g++ ServerSocketApplication.cpp -o ServerSocketApplication -lws2_32 } ; if ($?) { .\ServerSocketApplication }
 
 
 //The Client Application
