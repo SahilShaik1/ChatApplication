@@ -70,7 +70,6 @@ int main() {
                             if(index % 2 == 0){
                                 std::cin.getline(buffer, 500);
                                 //Even Turns
-                                //-s Brotha.cpp f.cpp
                                 if(buffer[0] == '-' && buffer[1] == 's'){
                                     char* token = strtok(buffer, " ");
                                     token = strtok(NULL, " ");
