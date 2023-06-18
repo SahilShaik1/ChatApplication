@@ -16,7 +16,7 @@ int main() {
     WORD wVerReq = MAKEWORD(2,2);
     wsaerr = WSAStartup(wVerReq, dataref);
     std::string serverIP = "0.0.0.0";
-
+    const unsigned short port = 00000;
     if(wsaerr == 0){
         //Successful Startup
         std::cout << "WSA Clientside Started" << "\n";
@@ -26,7 +26,6 @@ int main() {
             std::cout << "Clientside socket initialized" << "\n";
             sockaddr_in clientService;
             clientService.sin_family = AF_INET;
-            const unsigned short port = 55555;
             PVOID cRefAddr = &clientService.sin_addr.s_addr;
             inet_pton(AF_INET, serverIP.c_str(), cRefAddr);
             clientService.sin_port = htons(port);
