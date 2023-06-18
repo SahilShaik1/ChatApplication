@@ -21,4 +21,4 @@ Basic Chat Application between 2 machines (or 1 machine on the feedback loop IP)
 - **NOTE: File sharing requires lots of time, especially when the file is large in size. The file sharing can sometimes also break if the characters '@' or '%' is used as it signifies to start a new line and finish sharing the file respectively**
 - The code works by checking every 5 characters to send since the send function gets corrupted over large amounts of text, and if the first character of every 5 characters matches, the reciever file runs the command to start a new file or stop reading
 - This can easily be changed by adding a larger series of key codes, but make sure to change on both the sender and reciever if you want to make the change
-- Pay attention to having the same type of byte format, meaning one system can't use big endian and the other little endian, otherwise you will get completely wrong values
+- Pay attention a systems byte format, meaning one system can't use big endian and the other little endian, otherwise you will get completely wrong values
